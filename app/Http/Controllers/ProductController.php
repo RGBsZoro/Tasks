@@ -9,39 +9,22 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    public function search(Request $request){
+        $products = Product::query()->where('name' , 'LIKE' , "%$request->search%")->paginate(10);
+        return view('products.index' , compact('products'));
+    }
     public function index(){
-        return $this->success([
-            'products' => Product::query()->get()
-        ]); 
+        $products = Product::query()->paginate(5);
+        return view('products.index' , compact('products'));
     }
 
-    public function show(Product $product){
-        return $this->success([
-            'product' => $product
-        ]);
+    public function create(){
+        return view('products.create');
     }
-
+    
     public function store(CreateProductRequest $request){
-        $product = Product::query()->create($request->validated());
+        Product::query()->create($request->validated());
+        return redirect('products');
 
-        return $this->success([
-            'product' => $product
-        ] , '' , 201);
-    }
-
-    public function update(UpdateProductRequest $request , Product $product){
-        $product->update($request->validated());
-
-        return $this->success([
-            'product' => $product
-        ]);
-    }
-
-
-
-    public function destroy(Product $product){
-        $product->delete();
-
-        $this->success([]);
     }
 }
