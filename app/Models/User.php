@@ -46,8 +46,20 @@ class User extends Authenticatable
         ];
     }
 
-    public function books()
+    public function profile(){
+        return $this->hasOne(Profile::class);
+    }
+
+    public function tasks()
     {
-        return $this->hasMany(Book::class);
+        return $this->belongsToMany(Task::class , 'task_user');
+    }
+
+    public function teacher(){
+        return $this->hasOne(Teacher::class);
+    }
+
+    public function student(){
+        return $this->hasOne(Student::class);
     }
 }
