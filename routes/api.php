@@ -6,6 +6,9 @@ use App\Http\Controllers\MedicalFileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\TeacherController;
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -25,3 +28,11 @@ Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
 
 Route::post('/products', [ProductController::class, 'store']);
 Route::get('/products/{product}', [ProductController::class, 'show']);
+
+Route::get('teachers' , [TeacherController::class , 'index']);
+Route::get('teachers/{teacher}/courses' , [TeacherController::class , 'getAllCourses']);
+Route::get('students' , [StudentController::class , 'index']);
+Route::get('courses/{course}' , [CourseController::class , 'show']);
+Route::post('courses/{course}/sync-students' , [CourseController::class , 'SyncWithStudents']);
+Route::post('courses/{teacher}' , [CourseController::class , 'store']);
+Route::post('teachers/{teacher}/attach-students' , [TeacherController::class , 'attachTeacherWithStudent']);

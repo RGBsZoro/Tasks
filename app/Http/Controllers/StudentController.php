@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
+
+    public function index(){
+        $students = Student::with('user')->get();
+        return response()->json($students);
+    }
     public function store(Request $request)
     {
         $student = Student::create($request->all());
