@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\MedicalFileController;
@@ -13,6 +14,10 @@ use App\Http\Controllers\TeacherController;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+Route::post('register' , [AuthController::class , 'register']);
+Route::post('login' , [AuthController::class , 'login']);
+Route::post('logout' , [AuthController::class , 'logout'])->middleware('auth:api');
 
 Route::post('/students', [StudentController::class, 'store']);
 Route::get('/students/{student}', [StudentController::class, 'show']);
@@ -36,3 +41,5 @@ Route::get('courses/{course}' , [CourseController::class , 'show']);
 Route::post('courses/{course}/sync-students' , [CourseController::class , 'SyncWithStudents']);
 Route::post('courses/{teacher}' , [CourseController::class , 'store']);
 Route::post('teachers/{teacher}/attach-students' , [TeacherController::class , 'attachTeacherWithStudent']);
+
+
