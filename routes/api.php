@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\TeacherController;
 
 
@@ -42,4 +43,12 @@ Route::post('courses/{course}/sync-students' , [CourseController::class , 'SyncW
 Route::post('courses/{teacher}' , [CourseController::class , 'store']);
 Route::post('teachers/{teacher}/attach-students' , [TeacherController::class , 'attachTeacherWithStudent']);
 
+
+Route::group(['middleware' => ['auth:api']] , function(){
+    Route::post('posts' , [PostController::class , 'store']);
+    Route::put('posts/{post}' , [PostController::class , 'update']);
+    Route::delete('posts/{post}' , [PostController::class , 'destroy'])
+        ->middleware('can:delete,post');
+
+});
 
