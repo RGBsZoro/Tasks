@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TeacherController;
-
+use App\Models\Image;
+use App\Models\Post;
+use App\Models\Project;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -44,11 +46,38 @@ Route::post('courses/{teacher}' , [CourseController::class , 'store']);
 Route::post('teachers/{teacher}/attach-students' , [TeacherController::class , 'attachTeacherWithStudent']);
 
 
-Route::group(['middleware' => ['auth:api']] , function(){
-    Route::post('posts' , [PostController::class , 'store']);
-    Route::put('posts/{post}' , [PostController::class , 'update']);
-    Route::delete('posts/{post}' , [PostController::class , 'destroy'])
-        ->middleware('can:delete,post');
+// Route::group(['middleware' => ['auth:api']] , function(){
+//     Route::post('posts' , [PostController::class , 'store']);
+//     Route::put('posts/{post}' , [PostController::class , 'update']);
+//     Route::delete('posts/{post}' , [PostController::class , 'destroy'])
+//         ->middleware('can:delete,post');
 
-});
+// });
+
+    Route::get('test' , function(){
+        $project = Project::create([
+            'name' => 'test'
+        ]);
+
+        $task = $project->tasks()->create([
+            'title' => 'test'
+        ]);
+
+        $task->users()->create([
+            'name' => 'test',
+            'email' => 'test@gmail.com',
+            'password' => 'test',
+        ]);
+
+        return Project::withWhereHas('users')->get();
+    });
+
+    Route::get('test/morph' , function(){
+        $post = Post::create([
+        'name' => 'test'
+        ]);
+        $post->images()->create();
+
+        return Image::with('imagable')->get();
+    });
 
