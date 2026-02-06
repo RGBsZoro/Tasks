@@ -42,9 +42,11 @@
             <thead>
                 <tr>
                     <th scope="col">ID</th>
-                    <th scope="col">Name</th>
+                    <th scope="col">Name en</th>
+                    <th scope="col">Name ar</th>
+                    <th scope="col">Description en</th>
+                    <th scope="col">Description ar</th>
                     <th scope="col">Price</th>
-                    <th scope="col">Category</th>
                     <th scope="col">Created At</th>  
                 </tr>
             </thead>
@@ -52,9 +54,11 @@
                 @foreach ($products as $product)
                     <tr>
                         <td>{{ $product->id }}</td>
-                        <td>{{ $product->name }}</td>
+                        <td>{{ $product->getTranslation('name' , 'en') }}</td>
+                        <td>{{ $product->getTranslation('name' , 'ar') }}</td>
+                        <td>{{ $product->getTranslation('description' , 'en') }}</td>
+                        <td>{{ $product->getTranslation('description' , 'ar') }}</td>
                         <td>{{ $product->price }}$</td>
-                        <td>{{ $product->category }}</td>
                         <td>{{ $product->created_at }}</td>
                     </tr>
                 @endforeach
@@ -63,11 +67,11 @@
 
         <a href="{{ route('products.create') }}" class="btn btn-primary mb-3">Create Product</a>
 
-        <nav aria-label="Page navigation">
+        {{-- <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
                 {{ $products->links('pagination::bootstrap-5') }}
             </ul>
-        </nav>
+        </nav> --}}
 
     </div>
 </body>

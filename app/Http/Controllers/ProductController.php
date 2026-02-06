@@ -3,21 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateProductRequest;
+use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\HttpCache\Store;
 
 class ProductController extends Controller
 {
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        $product = Product::create($request->all());
-        return response()->json($product, 201);
+        Product::create($request->validated());
+        return redirect()->route('products.index');
     }
-    public function show(Product $product)
+
+    public function create()
     {
-        $product->load('category:id,name');
-        return response()->json($product);
+        return view('products.create');
+    }
+
+    public function index(){
+        $products = Product::all();
+        return view('products.index' , compact('products'));
     }
 }
 
