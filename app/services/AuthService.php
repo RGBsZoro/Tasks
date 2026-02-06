@@ -2,6 +2,7 @@
 
 namespace App\services;
 
+use App\Events\UserLoggedIn;
 use App\Models\User;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\Hash;
@@ -15,6 +16,7 @@ class AuthService
             'password' => $data['password']
         ]);
         $token = $user->createToken('token')->plainTextToken;
+        event(new UserLoggedIn($user));
         return [
             'user' => $user,
             'token' => $token
@@ -26,6 +28,7 @@ class AuthService
 
         if($user && Hash::check($data['password'] , $user->password)){
             $token = $user->createToken('token')->plainTextToken;
+            event(new UserLoggedIn($user));
             return [
                 'user' => $user,
                 'token' => $token
