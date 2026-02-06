@@ -3,6 +3,7 @@
 namespace App\services;
 
 use App\Events\UserLoggedIn;
+use App\Jobs\SendWelcomeEmailJob;
 use App\Models\User;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\Hash;
@@ -17,6 +18,7 @@ class AuthService
         ]);
         $token = $user->createToken('token')->plainTextToken;
         event(new UserLoggedIn($user));
+        SendWelcomeEmailJob::dispatch($user);
         return [
             'user' => $user,
             'token' => $token
