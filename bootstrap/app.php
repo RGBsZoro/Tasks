@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\ApiLocalization;
+use App\Http\Middleware\WebLocalization;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Application;
@@ -16,7 +18,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->web([
+            'WebLocalization' => WebLocalization::class,
+        ]);
+
+        $middleware->api([
+            'ApiLocalization' => ApiLocalization::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->report(function(Throwable $exception){

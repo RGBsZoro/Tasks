@@ -23,3 +23,8 @@ Route::get('dashboard' , [DashboardController::class , 'dashboard'])
     ->name('dashboard');
 Route::get('users' , [DashboardController::class , 'users'])
     ->name('users');
+
+Route::get('locale/{lang}',function($lang){
+    session(['locale' => $lang]);
+    return redirect()->back();
+})->name('locale');
